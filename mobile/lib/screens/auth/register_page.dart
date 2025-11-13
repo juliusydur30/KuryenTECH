@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gardian_mobile_application/screens/auth/login_page.dart';
+import 'login_page.dart';
 import '../../services/auth_services.dart';
 import 'otp_page.dart';
 import '../../widgets/custom_text_field.dart';
