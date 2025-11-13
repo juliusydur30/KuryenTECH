@@ -1,57 +1,63 @@
 import 'package:flutter/material.dart';
-import '../../main.dart';
-import '../auth/login_page.dart';
+import '../../services/auth_services.dart';
+import 'report/photo_selection_page.dart';
+import '../../widgets/custom_drawer.dart';
+import '../../widgets/report_history.dart';
+import '../../widgets/home_header.dart'; 
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final user = supabase.auth.currentUser;
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange,
-        title: const Text('Home'),
+        backgroundColor: const Color(0xFF122D5A),
+        elevation: 0,
+        centerTitle: true,
+        title: Image.asset(
+          'assets/icons/GARDIAN_TEXT.png',
+          height: 180,
+          color: Colors.white,
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await supabase.auth.signOut();
-              if (context.mounted) {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const LoginPage()),
-                );
-              }
-            },
+            onPressed: () {},
+            icon: const Icon(Icons.notifications_none, color: Colors.white),
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Welcome to KuryenTECH!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Email: ${user?.email ?? "No user"}',
-              style: const TextStyle(color: Colors.white70),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'User ID: ${user?.id ?? "No ID"}',
-              style: const TextStyle(color: Colors.white70),
-            ),
-          ],
-        ),
+
+      drawer: const CustomDrawer(),
+
+      body: Column(
+        children: const [
+          HomeHeader(),
+          Expanded(child: ReportHistory()),
+        ],
       ),
+
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const PhotoSelectionPage()),
+          );
+        },
+        backgroundColor: Colors.green,
+        label: const Text(
+          "Report an Issue",
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+        extendedPadding: EdgeInsets.symmetric(horizontal: 90.0),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
